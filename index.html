@@ -16,15 +16,32 @@
     </header>
 
     <!-- Main -->
-    <main>
-        <div class="">
-            <div class="">
-                <h2 class="">Search for a City</h2>
-                <input class="" placeholder="City">
-                <button class="">Search</button>
+    <main class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="search-container">
+                    <h2 class="section-heading">Search for a City</h2>
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="City">
+                        <button class="btn btn-primary">Search</button>
+                    </div>
+                    <ul class="list-group search-history">
+                        <!-- Search History Items -->
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="search-results-container">
+                    <h2 class="section-heading">Search Results</h2>
+                    <div class="current-weather">
+                        <!-- Current Weather Results -->
+                    </div>
+                    <div class="forecast">
+                        <!-- 5-day forecast -->
+                    </div>
+                </div>
             </div>
         </div>
-        <div class=""></div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/script.js"></script>
