@@ -31,7 +31,7 @@ $(document).ready(function() {
 
     function addToSearchHistory(city) {
         //Check if the city has already been searched
-        if (searchHistory.indexOf(city) === -1) {
+        if (!searchHistory.includes(city)) {
             searchHistory.push(city);
 
             // Update local storage
@@ -42,15 +42,63 @@ $(document).ready(function() {
 
 // Render the search history
 function renderSearchHistory() {
-    $('.search-history').empty();
-
-    // Render each item
+    var searchHistoryContainer = $('.list-group');
+    searchHistoryContainer.empty();
     searchHistory.forEach(function(city) {
-        var listItem = $('<li>').addClass('list-group-item').text(city);
-        $('.search-history').prepend(listItem);
+        searchHistoryContainer.append('<li class="list-group-item">' + city + '</li>');
     });
 }
 
 // Fetch weather data for cities
+function fetchWeatherData(city) {
+    var apiKey = '13d18342efaddb08465cfed49539d47c';
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&appid=' + apiKey;
 
-})
+    $.ajax({
+        url: apiUrl,
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            processWeatherData(response);
+        },
+        error: function() {
+            alert('Error while fetching data. Please try again.');
+        }
+    });
+}
+
+// Processing the data to be displayed
+function processWeatherData(data) {
+    var cityName = data.city.name;
+    var currentWeather = data.list[0];
+    var forecast = data.list.slice(1, 6);
+
+    // Current weather
+    $('.weather-city').text('City: ' + cityName);
+    $('.weather-date').text('Date: ' + currentWeather.dt_txt);
+    $('.weather-temperature').text('Temperature: ' + tempConversion(currentWeather.main.temp) + ' °F');
+    $('.weather-humidity').text('Humidity: ' + currentWeather.main.humidity + '%');
+    $('.weather-wind-speed').text('Wind Speed: ' + currentWeather.wind.speed + ' mph');
+
+    // 5-day forecast
+    $('.forecast-card').empty();
+    forecast.forEach(function(day) {
+        var forecastDate = new Date(day.dt_txt).toLocaleDateString();
+        var card = `
+        <div class="card">
+            <p class="forecast-date">Date: ${forecastDate}</p>
+            <p class="forecast-temperature">Temperature: ${tempConversion(day.main.temp)} °F</p>
+            <p class="forecast-wind-speed">Wind Speed: ${day.wind.speed} mph</p>
+            <p class="forecast-humidity">Humidity: ${day.main.humidity}%</p>
+        </div>
+        `;
+        $('.forecast-card').append(card);
+    });
+}
+
+// Converting temperature to Fahrenheit since the API pulled the temperatures in Kelvin
+function tempConversion(kelvin) {
+    var fahrenheit = (kelvin - 273.15) * 9/5 + 32;
+    return Math.round(fahrenheit);
+}
+});
