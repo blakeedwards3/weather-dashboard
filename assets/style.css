@@ -34,6 +34,15 @@ header {
     margin-bottom: 20px;
 }
 
-.forecast {
-    
+.forecast-card {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 15px;
+}
+
+.forecast-card .card {
+    margin-right: 10px;
+    flex: 0 0 auto;
+    max-width: 100%;
 }

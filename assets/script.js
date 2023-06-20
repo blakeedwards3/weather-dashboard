@@ -27,6 +27,17 @@ $(document).ready(function () {
         fetchWeatherData(city);
     });
 
+    // Clear Search History Click Function
+    $('.clear-button').on('click', function() {
+        clearSearchHistory();
+    });
+
+    function clearSearchHistory() {
+        searchHistory = [];
+        localStorage.removeItem('searchHistory');
+        renderSearchHistory();
+    }
+
     // Previously searched cities/Local Storage
 
     function addToSearchHistory(city) {
@@ -87,11 +98,13 @@ $(document).ready(function () {
             forecastDate.setDate(forecastDate.getDate() + index + 1);
             var forecastDateString = forecastDate.toLocaleDateString();
             var card = `
-        <div class="card">
-            <p class="forecast-date">Date: ${forecastDate}</p>
-            <p class="forecast-temperature">Temperature: ${tempConversion(day.main.temp)} °F</p>
-            <p class="forecast-wind-speed">Wind Speed: ${day.wind.speed} mph</p>
-            <p class="forecast-humidity">Humidity: ${day.main.humidity}%</p>
+        <div class="col-md-2 col-sm-4">            
+            <div class="card">
+                <p class="forecast-date">Date: ${forecastDate}</p>
+                <p class="forecast-temperature">Temperature: ${tempConversion(day.main.temp)} °F</p>
+                <p class="forecast-wind-speed">Wind Speed: ${day.wind.speed} mph</p>
+                <p class="forecast-humidity">Humidity: ${day.main.humidity}%</p>
+            </div>
         </div>
         `;
             $('.forecast-card').append(card);
